@@ -1,12 +1,12 @@
 package at.backend.tourist.places.Service;
 
 
-import at.backend.tourist.places.modules.Places.AutoMappers.PlaceCategoryMapper;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceCategoryDTO;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceCategoryInsertDTO;
-import at.backend.tourist.places.modules.Places.Models.PlaceCategory;
-import at.backend.tourist.places.modules.Places.Repository.PlaceCategoryRepository;
-import at.backend.tourist.places.modules.Places.Service.PlaceCategoryServiceImpl;
+import at.backend.tourist.places.modules.places.auto_mappers.PlaceCategoryMapper;
+import at.backend.tourist.places.modules.places.dto.PlaceCategoryDTO;
+import at.backend.tourist.places.modules.places.dto.PlaceCategoryInsertDTO;
+import at.backend.tourist.places.modules.places.model.PlaceCategory;
+import at.backend.tourist.places.modules.places.repository.PlaceCategoryRepository;
+import at.backend.tourist.places.modules.places.service.PlaceCategoryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

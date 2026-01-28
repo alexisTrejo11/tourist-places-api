@@ -1,15 +1,15 @@
 package at.backend.tourist.places.Service;
 
-import at.backend.tourist.places.core.Exceptions.BusinessLogicException;
-import at.backend.tourist.places.core.Exceptions.ResourceNotFoundException;
-import at.backend.tourist.places.modules.Activity.DTOs.ActivityDTO;
-import at.backend.tourist.places.modules.Activity.DTOs.ActivityInsertDTO;
-import at.backend.tourist.places.modules.Activity.Model.Activity;
-import at.backend.tourist.places.modules.Activity.Repository.ActivityRepository;
-import at.backend.tourist.places.modules.Activity.Service.ActivityServiceImpl;
-import at.backend.tourist.places.modules.Places.Models.TouristPlace;
-import at.backend.tourist.places.modules.Places.Repository.TouristPlaceRepository;
-import at.backend.tourist.places.modules.Activity.AutoMappers.ActivityMapper;
+import at.backend.tourist.places.core.exceptions.BusinessLogicException;
+import at.backend.tourist.places.core.exceptions.ResourceNotFoundException;
+import at.backend.tourist.places.modules.activity.dtos.ActivityDTO;
+import at.backend.tourist.places.modules.activity.dtos.ActivityInsertDTO;
+import at.backend.tourist.places.modules.activity.model.Activity;
+import at.backend.tourist.places.modules.activity.repository.ActivityRepository;
+import at.backend.tourist.places.modules.activity.service.ActivityServiceImpl;
+import at.backend.tourist.places.modules.places.model.TouristPlace;
+import at.backend.tourist.places.modules.places.repository.TouristPlaceRepository;
+import at.backend.tourist.places.modules.activity.auto_mapper.ActivityMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

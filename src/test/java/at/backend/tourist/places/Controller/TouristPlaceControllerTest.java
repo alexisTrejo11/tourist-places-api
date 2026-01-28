@@ -1,11 +1,11 @@
 package at.backend.tourist.places.Controller;
 
-import at.backend.tourist.places.modules.Places.Controller.TouristPlaceController;
-import at.backend.tourist.places.modules.Places.DTOs.TouristPlaceDTO;
-import at.backend.tourist.places.modules.Places.DTOs.TouristPlaceInsertDTO;
-import at.backend.tourist.places.modules.Places.DTOs.TouristPlaceSearchDTO;
-import at.backend.tourist.places.modules.Places.Service.TouristPlaceService;
-import at.backend.tourist.places.core.Utils.Response.ResponseWrapper;
+import at.backend.tourist.places.modules.places.controller.TouristPlaceController;
+import at.backend.tourist.places.modules.places.dto.TouristPlaceDTO;
+import at.backend.tourist.places.modules.places.dto.TouristPlaceInsertDTO;
+import at.backend.tourist.places.modules.places.dto.TouristPlaceSearchDTO;
+import at.backend.tourist.places.modules.places.service.TouristPlaceService;
+import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -58,7 +58,7 @@ class TouristPlaceControllerTest {
         when(placeService.searchTouristPlaces(eq(searchDTO), any(Pageable.class))).thenReturn(mockPage);
         ResponseWrapper<Page<TouristPlaceDTO>> response = touristPlaceController.searchTouristPlaces(searchDTO);
         assertNotNull(response);
-        assertEquals("Tourist Places data successfully fetched", response.getMessage());
+        assertEquals("Tourist places data successfully fetched", response.getMessage());
     }
 
     @Test

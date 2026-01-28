@@ -3,18 +3,18 @@ package at.backend.tourist.places.Service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import at.backend.tourist.places.core.Exceptions.BusinessLogicException;
-import at.backend.tourist.places.core.Exceptions.ResourceNotFoundException;
-import at.backend.tourist.places.modules.Review.AutoMappers.ReviewMapper;
-import at.backend.tourist.places.modules.Review.DTOs.ReviewDTO;
-import at.backend.tourist.places.modules.Review.DTOs.ReviewInsertDTO;
-import at.backend.tourist.places.modules.Review.Repository.ReviewRepository;
-import at.backend.tourist.places.modules.Review.Review;
-import at.backend.tourist.places.modules.Places.Models.TouristPlace;
-import at.backend.tourist.places.modules.User.Model.User;
-import at.backend.tourist.places.modules.Places.Repository.TouristPlaceRepository;
-import at.backend.tourist.places.modules.User.Repository.UserRepository;
-import at.backend.tourist.places.modules.Review.Service.ReviewServiceImpl;
+import at.backend.tourist.places.core.exceptions.BusinessLogicException;
+import at.backend.tourist.places.core.exceptions.ResourceNotFoundException;
+import at.backend.tourist.places.modules.review.auto_mapper.ReviewMapper;
+import at.backend.tourist.places.modules.review.dto.ReviewDTO;
+import at.backend.tourist.places.modules.review.dto.ReviewInsertDTO;
+import at.backend.tourist.places.modules.review.repository.ReviewRepository;
+import at.backend.tourist.places.modules.review.model.Review;
+import at.backend.tourist.places.modules.places.model.TouristPlace;
+import at.backend.tourist.places.modules.user.model.User;
+import at.backend.tourist.places.modules.places.repository.TouristPlaceRepository;
+import at.backend.tourist.places.modules.user.repository.UserRepository;
+import at.backend.tourist.places.modules.review.service.ReviewServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)

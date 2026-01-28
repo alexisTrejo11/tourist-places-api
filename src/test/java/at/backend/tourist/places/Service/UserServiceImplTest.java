@@ -1,14 +1,14 @@
 package at.backend.tourist.places.Service;
 
-import at.backend.tourist.places.core.Exceptions.ResourceNotFoundException;
-import at.backend.tourist.places.modules.Auth.DTOs.SignupDTO;
-import at.backend.tourist.places.modules.User.AutoMapper.UserMappers;
-import at.backend.tourist.places.modules.User.DTOs.UserDTO;
-import at.backend.tourist.places.modules.User.DTOs.UserInsertDTO;
-import at.backend.tourist.places.modules.User.Model.User;
-import at.backend.tourist.places.modules.User.Repository.UserRepository;
-import at.backend.tourist.places.modules.User.Service.UserServiceImpl;
-import at.backend.tourist.places.core.Utils.Enum.Role;
+import at.backend.tourist.places.core.exceptions.ResourceNotFoundException;
+import at.backend.tourist.places.modules.auth.dto.SignupDTO;
+import at.backend.tourist.places.modules.user.auto_mappers.UserMappers;
+import at.backend.tourist.places.modules.user.dtos.UserDTO;
+import at.backend.tourist.places.modules.user.dtos.UserInsertDTO;
+import at.backend.tourist.places.modules.user.model.User;
+import at.backend.tourist.places.modules.user.repository.UserRepository;
+import at.backend.tourist.places.modules.user.service.UserServiceImpl;
+import at.backend.tourist.places.core.shared.Enum.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

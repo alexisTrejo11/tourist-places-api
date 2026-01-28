@@ -1,12 +1,12 @@
 package at.backend.tourist.places.Controller;
 
-import at.backend.tourist.places.core.Utils.Enum.Continent;
-import at.backend.tourist.places.modules.Auth.JWT.JwtAuthenticationFilter;
-import at.backend.tourist.places.modules.Auth.JWT.JwtService;
-import at.backend.tourist.places.modules.Country.Controller.CountryController;
-import at.backend.tourist.places.modules.Country.DTOs.CountryDTO;
-import at.backend.tourist.places.modules.Country.DTOs.CountryInsertDTO;
-import at.backend.tourist.places.modules.Country.Service.CountryService;
+import at.backend.tourist.places.core.shared.Enum.Continent;
+import at.backend.tourist.places.modules.auth.jwt.JwtAuthenticationFilter;
+import at.backend.tourist.places.modules.auth.jwt.JwtService;
+import at.backend.tourist.places.modules.country.controller.CountryController;
+import at.backend.tourist.places.modules.country.dtos.CountryDTO;
+import at.backend.tourist.places.modules.country.dtos.CountryInsertDTO;
+import at.backend.tourist.places.modules.country.service.CountryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

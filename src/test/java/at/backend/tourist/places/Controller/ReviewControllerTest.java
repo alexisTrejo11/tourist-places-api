@@ -1,12 +1,12 @@
 package at.backend.tourist.places.Controller;
 
 
-import at.backend.tourist.places.core.Utils.Response.ResponseWrapper;
-import at.backend.tourist.places.modules.Review.Controller.ReviewController;
-import at.backend.tourist.places.modules.Review.DTOs.ReviewDTO;
-import at.backend.tourist.places.modules.Review.DTOs.ReviewInsertDTO;
-import at.backend.tourist.places.modules.Review.Service.ReviewService;
-import at.backend.tourist.places.modules.Places.Service.TouristPlaceService;
+import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
+import at.backend.tourist.places.modules.review.controller.ReviewController;
+import at.backend.tourist.places.modules.review.dto.ReviewDTO;
+import at.backend.tourist.places.modules.review.dto.ReviewInsertDTO;
+import at.backend.tourist.places.modules.review.service.ReviewService;
+import at.backend.tourist.places.modules.places.service.TouristPlaceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -97,7 +97,7 @@ class ReviewControllerTest {
 
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Review", response.getBody().getMessage());
+        assertEquals("review", response.getBody().getMessage());
     }
 
     @Test
@@ -109,7 +109,7 @@ class ReviewControllerTest {
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Review", response.getBody().getMessage());
+        assertEquals("review", response.getBody().getMessage());
     }
 }
 

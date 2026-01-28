@@ -1,14 +1,14 @@
 package at.backend.tourist.places.Controller;
 
 
-import at.backend.tourist.places.modules.Auth.Controller.AuthController;
-import at.backend.tourist.places.modules.Auth.DTOs.LoginDTO;
-import at.backend.tourist.places.modules.Auth.DTOs.LoginResponseDTO;
-import at.backend.tourist.places.modules.Auth.DTOs.SignupDTO;
-import at.backend.tourist.places.modules.User.DTOs.UserDTO;
-import at.backend.tourist.places.modules.Auth.Service.AuthService;
-import at.backend.tourist.places.modules.User.Service.UserService;
-import at.backend.tourist.places.core.Service.SendingService;
+import at.backend.tourist.places.modules.auth.controller.AuthController;
+import at.backend.tourist.places.modules.auth.dto.LoginDTO;
+import at.backend.tourist.places.modules.auth.dto.LoginResponseDTO;
+import at.backend.tourist.places.modules.auth.dto.SignupDTO;
+import at.backend.tourist.places.modules.user.dtos.UserDTO;
+import at.backend.tourist.places.modules.auth.service.AuthService;
+import at.backend.tourist.places.modules.user.service.UserService;
+import at.backend.tourist.places.core.service.SendingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

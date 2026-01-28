@@ -1,11 +1,11 @@
 package at.backend.tourist.places.Controller;
 
 
-import at.backend.tourist.places.core.Utils.Response.ResponseWrapper;
-import at.backend.tourist.places.modules.Places.Controller.PlaceCategoryController;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceCategoryDTO;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceCategoryInsertDTO;
-import at.backend.tourist.places.modules.Places.Service.PlaceCategoryService;
+import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
+import at.backend.tourist.places.modules.places.controller.PlaceCategoryController;
+import at.backend.tourist.places.modules.places.dto.PlaceCategoryDTO;
+import at.backend.tourist.places.modules.places.dto.PlaceCategoryInsertDTO;
+import at.backend.tourist.places.modules.places.service.PlaceCategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

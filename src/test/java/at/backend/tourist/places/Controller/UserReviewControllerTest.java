@@ -1,13 +1,13 @@
 package at.backend.tourist.places.Controller;
 
-import at.backend.tourist.places.core.Utils.Response.ResponseWrapper;
-import at.backend.tourist.places.modules.Auth.JWT.JwtService;
-import at.backend.tourist.places.modules.Places.Service.TouristPlaceService;
-import at.backend.tourist.places.modules.Review.DTOs.ReviewDTO;
-import at.backend.tourist.places.modules.Review.DTOs.ReviewInsertDTO;
-import at.backend.tourist.places.modules.Review.DTOs.ReviewUpdateDTO;
-import at.backend.tourist.places.modules.Review.Service.ReviewService;
-import at.backend.tourist.places.modules.User.Controller.UserReviewController;
+import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
+import at.backend.tourist.places.modules.auth.jwt.JwtService;
+import at.backend.tourist.places.modules.places.service.TouristPlaceService;
+import at.backend.tourist.places.modules.review.dto.ReviewDTO;
+import at.backend.tourist.places.modules.review.dto.ReviewInsertDTO;
+import at.backend.tourist.places.modules.review.dto.ReviewUpdateDTO;
+import at.backend.tourist.places.modules.review.service.ReviewService;
+import at.backend.tourist.places.modules.user.controller.UserReviewController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

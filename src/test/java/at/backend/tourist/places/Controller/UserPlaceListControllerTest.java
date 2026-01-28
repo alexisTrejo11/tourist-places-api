@@ -1,10 +1,10 @@
 package at.backend.tourist.places.Controller;
 
-import at.backend.tourist.places.modules.Auth.JWT.JwtService;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceListDTO;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceListInsertDTO;
-import at.backend.tourist.places.modules.Places.Service.PlaceListService;
-import at.backend.tourist.places.modules.User.Controller.UserPlaceListController;
+import at.backend.tourist.places.modules.auth.jwt.JwtService;
+import at.backend.tourist.places.modules.places.dto.PlaceListDTO;
+import at.backend.tourist.places.modules.places.dto.PlaceListInsertDTO;
+import at.backend.tourist.places.modules.places.service.PlaceListService;
+import at.backend.tourist.places.modules.user.controller.UserPlaceListController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

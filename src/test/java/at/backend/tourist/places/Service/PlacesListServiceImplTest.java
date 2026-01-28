@@ -1,15 +1,15 @@
 package at.backend.tourist.places.Service;
 
-import at.backend.tourist.places.core.Exceptions.ResourceNotFoundException;
-import at.backend.tourist.places.modules.Places.AutoMappers.PlaceListMapper;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceListDTO;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceListInsertDTO;
-import at.backend.tourist.places.modules.Places.Models.PlaceList;
-import at.backend.tourist.places.modules.Places.Repository.PlaceListRepository;
-import at.backend.tourist.places.modules.Places.Repository.TouristPlaceRepository;
-import at.backend.tourist.places.modules.Places.Service.PlacesListServiceImpl;
-import at.backend.tourist.places.modules.User.Model.User;
-import at.backend.tourist.places.modules.User.Repository.UserRepository;
+import at.backend.tourist.places.core.exceptions.ResourceNotFoundException;
+import at.backend.tourist.places.modules.places.auto_mappers.PlaceListMapper;
+import at.backend.tourist.places.modules.places.dto.PlaceListDTO;
+import at.backend.tourist.places.modules.places.dto.PlaceListInsertDTO;
+import at.backend.tourist.places.modules.places.model.PlaceList;
+import at.backend.tourist.places.modules.places.repository.PlaceListRepository;
+import at.backend.tourist.places.modules.places.repository.TouristPlaceRepository;
+import at.backend.tourist.places.modules.places.service.PlacesListServiceImpl;
+import at.backend.tourist.places.modules.user.model.User;
+import at.backend.tourist.places.modules.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -54,17 +53,17 @@ class PlacesListServiceImplTest {
 
         placeList = new PlaceList();
         placeList.setId(1L);
-        placeList.setName("Favorite Places");
+        placeList.setName("Favorite places");
         placeList.setUser(user);
         placeList.setPlaces(new HashSet<>());
 
         placeListDTO = new PlaceListDTO();
         placeListDTO.setId(1L);
-        placeListDTO.setName("Favorite Places");
+        placeListDTO.setName("Favorite places");
         placeListDTO.setUserId(1L);
 
         placeListInsertDTO = new PlaceListInsertDTO();
-        placeListInsertDTO.setName("Favorite Places");
+        placeListInsertDTO.setName("Favorite places");
         placeListInsertDTO.setUserId(1L);
     }
 
@@ -76,7 +75,7 @@ class PlacesListServiceImplTest {
         PlaceListDTO result = placeListService.getById(1L);
 
         assertNotNull(result);
-        assertEquals("Favorite Places", result.getName());
+        assertEquals("Favorite places", result.getName());
     }
 
     @Test
@@ -97,7 +96,7 @@ class PlacesListServiceImplTest {
         PlaceListDTO result = placeListService.create(placeListInsertDTO);
 
         assertNotNull(result);
-        assertEquals("Favorite Places", result.getName());
+        assertEquals("Favorite places", result.getName());
         verify(placeListRepository, times(1)).saveAndFlush(any(PlaceList.class));
     }
 

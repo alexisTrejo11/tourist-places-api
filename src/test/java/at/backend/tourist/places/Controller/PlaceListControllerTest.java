@@ -1,9 +1,9 @@
 package at.backend.tourist.places.Controller;
 
-import at.backend.tourist.places.core.Utils.Response.ResponseWrapper;
-import at.backend.tourist.places.modules.Places.Controller.PlaceListController;
-import at.backend.tourist.places.modules.Places.DTOs.PlaceListDTO;
-import at.backend.tourist.places.modules.Places.Service.PlaceListService;
+import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
+import at.backend.tourist.places.modules.places.controller.PlaceListController;
+import at.backend.tourist.places.modules.places.dto.PlaceListDTO;
+import at.backend.tourist.places.modules.places.service.PlaceListService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,7 +78,7 @@ class PlaceListControllerTest {
         assertFalse(response.getData().isEmpty());
     }
 
-    /* Controller need to be refactored in service
+    /* controller need to be refactored in service
       @Test
     void getByUserId_NotFound() {
         when(placeListService.getByUserId(2L)).thenReturn(List.of());
