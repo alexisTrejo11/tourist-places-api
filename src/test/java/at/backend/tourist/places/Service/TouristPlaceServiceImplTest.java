@@ -1,16 +1,16 @@
 package at.backend.tourist.places.Service;
 
-import at.backend.tourist.places.core.Exceptions.ResourceNotFoundException;
-import at.backend.tourist.places.modules.Places.AutoMappers.TouristPlaceMapper;
-import at.backend.tourist.places.modules.Places.DTOs.TouristPlaceDTO;
-import at.backend.tourist.places.modules.Places.DTOs.TouristPlaceInsertDTO;
-import at.backend.tourist.places.modules.Places.Models.PlaceCategory;
-import at.backend.tourist.places.modules.Places.Models.TouristPlace;
-import at.backend.tourist.places.modules.Places.Repository.PlaceCategoryRepository;
-import at.backend.tourist.places.modules.Places.Repository.TouristPlaceRepository;
-import at.backend.tourist.places.modules.Country.Country;
-import at.backend.tourist.places.modules.Country.Repository.CountryRepository;
-import at.backend.tourist.places.modules.Places.Service.TouristPlaceServiceImpl;
+import at.backend.tourist.places.core.exceptions.ResourceNotFoundException;
+import at.backend.tourist.places.modules.places.auto_mappers.TouristPlaceMapper;
+import at.backend.tourist.places.modules.places.dto.TouristPlaceDTO;
+import at.backend.tourist.places.modules.places.dto.TouristPlaceInsertDTO;
+import at.backend.tourist.places.modules.places.model.PlaceCategory;
+import at.backend.tourist.places.modules.places.model.TouristPlace;
+import at.backend.tourist.places.modules.places.repository.PlaceCategoryRepository;
+import at.backend.tourist.places.modules.places.repository.TouristPlaceRepository;
+import at.backend.tourist.places.modules.country.model.Country;
+import at.backend.tourist.places.modules.country.repository.CountryRepository;
+import at.backend.tourist.places.modules.places.service.TouristPlaceServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

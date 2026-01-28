@@ -1,14 +1,14 @@
 package at.backend.tourist.places.Service;
 
-import at.backend.tourist.places.core.Exceptions.ResourceAlreadyExistsException;
-import at.backend.tourist.places.core.Exceptions.ResourceNotFoundException;
-import at.backend.tourist.places.modules.Country.AutoMappers.CountryMapper;
-import at.backend.tourist.places.modules.Country.DTOs.CountryDTO;
-import at.backend.tourist.places.modules.Country.DTOs.CountryInsertDTO;
-import at.backend.tourist.places.modules.Country.Country;
-import at.backend.tourist.places.modules.Country.Repository.CountryRepository;
-import at.backend.tourist.places.core.Utils.Enum.Continent;
-import at.backend.tourist.places.modules.Country.Service.CountryServiceImpl;
+import at.backend.tourist.places.core.exceptions.ResourceAlreadyExistsException;
+import at.backend.tourist.places.core.exceptions.ResourceNotFoundException;
+import at.backend.tourist.places.modules.country.auto_mappers.CountryMapper;
+import at.backend.tourist.places.modules.country.dtos.CountryDTO;
+import at.backend.tourist.places.modules.country.dtos.CountryInsertDTO;
+import at.backend.tourist.places.modules.country.model.Country;
+import at.backend.tourist.places.modules.country.repository.CountryRepository;
+import at.backend.tourist.places.core.shared.Enum.Continent;
+import at.backend.tourist.places.modules.country.service.CountryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,7 +63,7 @@ public class CountryServiceImplTest {
 
         ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> countryService.getById(1L));
 
-        assertEquals("Country not found with id: '1'", thrown.getMessage());
+        assertEquals("country not found with id: '1'", thrown.getMessage());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class CountryServiceImplTest {
 
         ResourceAlreadyExistsException thrown = assertThrows(ResourceAlreadyExistsException.class, () -> countryService.getByName("Spain"));
 
-        assertEquals("Country already exists with name: 'Spain'", thrown.getMessage());
+        assertEquals("country already exists with name: 'Spain'", thrown.getMessage());
     }
 
     @Test
@@ -130,7 +130,7 @@ public class CountryServiceImplTest {
 
         ResourceAlreadyExistsException thrown = assertThrows(ResourceAlreadyExistsException.class, () -> countryService.create(countryInsertDTO));
 
-        assertEquals("Country already exists with name: 'Spain'", thrown.getMessage());
+        assertEquals("country already exists with name: 'Spain'", thrown.getMessage());
     }
 
     @Test
@@ -148,6 +148,6 @@ public class CountryServiceImplTest {
 
         ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> countryService.delete(1L));
 
-        assertEquals("Country not found with id: '1'", thrown.getMessage());
+        assertEquals("country not found with id: '1'", thrown.getMessage());
     }
 }

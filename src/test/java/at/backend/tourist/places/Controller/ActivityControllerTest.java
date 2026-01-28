@@ -1,15 +1,14 @@
 package at.backend.tourist.places.Controller;
 
-import at.backend.tourist.places.modules.Activity.Controller.ActivityController;
-import at.backend.tourist.places.modules.Activity.DTOs.ActivityDTO;
-import at.backend.tourist.places.modules.Activity.DTOs.ActivityInsertDTO;
-import at.backend.tourist.places.modules.Activity.Service.ActivityService;
-import at.backend.tourist.places.modules.Auth.JWT.JwtAuthenticationFilter;
-import at.backend.tourist.places.modules.Auth.JWT.JwtService;
+import at.backend.tourist.places.modules.activity.controller.ActivityController;
+import at.backend.tourist.places.modules.activity.dtos.ActivityDTO;
+import at.backend.tourist.places.modules.activity.dtos.ActivityInsertDTO;
+import at.backend.tourist.places.modules.activity.service.ActivityService;
+import at.backend.tourist.places.modules.auth.jwt.JwtAuthenticationFilter;
+import at.backend.tourist.places.modules.auth.jwt.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -102,7 +101,7 @@ public class ActivityControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Activity data successfully fetched"))
+                .andExpect(jsonPath("$.message").value("activity data successfully fetched"))
                 .andExpect(jsonPath("$.data.id").value(1))
                 .andExpect(jsonPath("$.data.name").value("Hiking"))
                 .andExpect(jsonPath("$.data.description").value("Mountain hiking experience"))
@@ -146,7 +145,7 @@ public class ActivityControllerTest {
                         .content(objectMapper.writeValueAsString(activityInsertDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Activity successfully created"))
+                .andExpect(jsonPath("$.message").value("activity successfully created"))
                 .andExpect(jsonPath("$.data.id").value(3))
                 .andExpect(jsonPath("$.data.name").value("Swimming"))
                 .andExpect(jsonPath("$.data.description").value("Swimming lessons"))
@@ -164,6 +163,6 @@ public class ActivityControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Activity successfully deleted"));
+                .andExpect(jsonPath("$.message").value("activity successfully deleted"));
     }
 }

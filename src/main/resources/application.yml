@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Tourist Places
+    name: Tourist places
 
   flyway:
     locations: classpath:db/migrations
@@ -86,4 +86,4 @@ springdoc:
         bearerAuth:
           type: http
           scheme: bearer
-          bearerFormat: JWT
+          bearerFormat: jwt

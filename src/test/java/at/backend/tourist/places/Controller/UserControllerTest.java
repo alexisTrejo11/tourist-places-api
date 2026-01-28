@@ -1,11 +1,11 @@
 package at.backend.tourist.places.Controller;
 
-import at.backend.tourist.places.core.Utils.Enum.Role;
-import at.backend.tourist.places.modules.Auth.JWT.JwtService;
-import at.backend.tourist.places.modules.User.Controller.UserController;
-import at.backend.tourist.places.modules.User.DTOs.UserDTO;
-import at.backend.tourist.places.modules.User.DTOs.UserInsertDTO;
-import at.backend.tourist.places.modules.User.Service.UserService;
+import at.backend.tourist.places.core.shared.Enum.Role;
+import at.backend.tourist.places.modules.auth.jwt.JwtService;
+import at.backend.tourist.places.modules.user.controller.UserController;
+import at.backend.tourist.places.modules.user.dtos.UserDTO;
+import at.backend.tourist.places.modules.user.dtos.UserInsertDTO;
+import at.backend.tourist.places.modules.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

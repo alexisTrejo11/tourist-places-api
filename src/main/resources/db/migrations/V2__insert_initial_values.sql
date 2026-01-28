@@ -1,9 +1,9 @@
 -- Inserts
 -- First, insert place categories
 INSERT INTO place_categories (name, description) VALUES
-('Historical Site', 'Places of historical significance including monuments, ruins, and museums'),
+('Historical Site', 'places of historical significance including monuments, ruins, and museums'),
 ('Natural Wonder', 'Beautiful natural locations including parks, mountains, and beaches'),
-('Cultural Venue', 'Places celebrating local culture, arts, and traditions'),
+('Cultural Venue', 'places celebrating local culture, arts, and traditions'),
 ('Religious Site', 'Temples, churches, mosques, and other religious landmarks'),
 ('Entertainment', 'Modern entertainment venues and attractions'),
 ('Adventure Spot', 'Locations for extreme sports and outdoor activities'),

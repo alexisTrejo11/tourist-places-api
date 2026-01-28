@@ -1,0 +1,58 @@
+package at.backend.tourist.places.modules.places.service;
+
+import at.backend.tourist.places.core.exceptions.ResourceNotFoundException;
+import at.backend.tourist.places.modules.places.auto_mappers.PlaceCategoryMapper;
+import at.backend.tourist.places.modules.places.dto.PlaceCategoryDTO;
+import at.backend.tourist.places.modules.places.dto.PlaceCategoryInsertDTO;
+import at.backend.tourist.places.modules.places.model.PlaceCategory;
+import at.backend.tourist.places.modules.places.repository.PlaceCategoryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class PlaceCategoryServiceImpl implements PlaceCategoryService {
+
+    private final PlaceCategoryRepository placeCategoryRepository;
+    private final PlaceCategoryMapper activityMapper;
+
+    @Override
+    public PlaceCategoryDTO create(PlaceCategoryInsertDTO insertDTO) {
+        PlaceCategory activity = activityMapper.DTOToEntity(insertDTO);
+
+        placeCategoryRepository.saveAndFlush(activity);
+
+        return activityMapper.entityToDTO(activity);
+    }
+
+    @Override
+    public PlaceCategoryDTO getById(Long id) {
+        Optional<PlaceCategory> optionalPlaceCategory = placeCategoryRepository.findById(id);
+        return optionalPlaceCategory
+                .map(activityMapper::entityToDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Place Category", "id", id));
+    }
+
+    @Override
+    public List<PlaceCategoryDTO> getAll() {
+        List<PlaceCategory> placeCategory =  placeCategoryRepository.findAll();
+
+        return placeCategory.stream()
+                .map(activityMapper::entityToDTO)
+                .toList();
+    }
+
+    @Override
+    public void delete(Long id) {
+        boolean exists = placeCategoryRepository.existsById(id);
+        if (!exists) {
+            throw new ResourceNotFoundException("Place Category", "id", id);
+        }
+
+        placeCategoryRepository.deleteById(id);
+    }
+}
+
