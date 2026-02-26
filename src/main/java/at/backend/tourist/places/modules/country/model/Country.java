@@ -21,7 +21,7 @@ public class Country {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "capitarl", nullable = false)
+    @Column(name = "capital", nullable = false)
     private String capital;
 
     @Column(name = "currency", nullable = false)

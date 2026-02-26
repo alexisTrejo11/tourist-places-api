@@ -17,6 +17,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -49,20 +50,20 @@ public class ActivityServiceImplTest {
         touristPlace = new TouristPlace(1L, "Beautiful Beach", "A stunning beach with golden sands.", 4.5,
                 "https://example.com/beach.jpg", "8 AM - 10 PM", "$$", null, null, null, null);
 
-        activity = new Activity(1L, "Hiking Tour", "A thrilling hike through the mountains.", 25.50, "3h", touristPlace);
+        activity = new Activity(1L, "Hiking Tour", "A thrilling hike through the mountains.", BigDecimal.valueOf(25.50), "3h", touristPlace);
 
         activityDTO = new ActivityDTO();
         activityDTO.setId(1L);
         activityDTO.setName("Hiking Tour");
         activityDTO.setDescription("A thrilling hike through the mountains.");
-        activityDTO.setPrice(25.50);
+        activityDTO.setPrice(BigDecimal.valueOf(25.50));
         activityDTO.setDuration("3h");
         activityDTO.setTouristPlaceId(touristPlace.getId());
 
         activityInsertDTO = new ActivityInsertDTO();
         activityInsertDTO.setName("Hiking Tour");
         activityInsertDTO.setDescription("A thrilling hike through the mountains.");
-        activityInsertDTO.setPrice(25.50);
+        activityInsertDTO.setPrice(BigDecimal.valueOf(25.50));
         activityInsertDTO.setDuration("3h");
         activityInsertDTO.setTouristPlaceId(touristPlace.getId());
     }
@@ -136,7 +137,7 @@ public class ActivityServiceImplTest {
     @Test
     public void testCreateThrowsBusinessLogicException() {
         when(touristPlaceRepository.findById(1L)).thenReturn(Optional.of(new TouristPlace()));
-        activityInsertDTO.setPrice(10000001d);  // Invalid price
+        activityInsertDTO.setPrice(BigDecimal.valueOf(10000001));  // Invalid price
 
         assertThrows(BusinessLogicException.class, () -> activityService.create(activityInsertDTO));
     }
