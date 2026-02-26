@@ -1,6 +1,9 @@
 package at.backend.tourist.places.modules.activity.dtos;
 
 import at.backend.tourist.places.modules.places.model.TouristPlace;
+
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +28,7 @@ public class ActivityInsertDTO {
     @JsonProperty("price")
     @NotNull(message = "price can't be null")
     @Positive(message = "price must be greater than zero")
-    private Double price;
+    private BigDecimal price;
 
     @Schema(description = "Duration of the activity in hours", example = "3h")
     @JsonProperty("duration")

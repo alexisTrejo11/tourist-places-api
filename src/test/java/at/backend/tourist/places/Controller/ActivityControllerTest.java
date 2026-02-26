@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,20 +55,20 @@ public class ActivityControllerTest {
         activityDTO1.setId(1L);
         activityDTO1.setName("Hiking");
         activityDTO1.setDescription("Mountain hiking experience");
-        activityDTO1.setPrice(50.0);
+        activityDTO1.setPrice(BigDecimal.valueOf(50));
         activityDTO1.setTouristPlaceId(101L);
 
         activityDTO2 = new ActivityDTO();
         activityDTO2.setId(2L);
         activityDTO2.setName("Kayaking");
         activityDTO2.setDescription("River kayaking adventure");
-        activityDTO2.setPrice(75.0);
+        activityDTO2.setPrice(BigDecimal.valueOf(75.0));
         activityDTO2.setTouristPlaceId(101L);
 
         activityInsertDTO = new ActivityInsertDTO();
         activityInsertDTO.setName("Swimming");
         activityInsertDTO.setDescription("Swimming lessons");
-        activityInsertDTO.setPrice(30.0);
+        activityInsertDTO.setPrice(BigDecimal.valueOf(30.0));
         activityInsertDTO.setTouristPlaceId(101L);
     }
 

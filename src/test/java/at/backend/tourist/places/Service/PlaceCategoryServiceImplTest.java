@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import jakarta.persistence.EntityNotFoundException;
+import at.backend.tourist.places.core.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -88,11 +88,8 @@ public class PlaceCategoryServiceImplTest {
         // Arrange
         when(placeCategoryRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Act
-        PlaceCategoryDTO result = placeCategoryService.getById(1L);
-
-        // Assert
-        assertNull(result);
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> placeCategoryService.getById(1L));
         verify(placeCategoryRepository, times(1)).findById(1L);
     }
 
@@ -131,7 +128,7 @@ public class PlaceCategoryServiceImplTest {
         when(placeCategoryRepository.existsById(1L)).thenReturn(false);
 
         // Act & Assert
-        assertThrows(EntityNotFoundException.class, () -> placeCategoryService.delete(1L));
+        assertThrows(ResourceNotFoundException.class, () -> placeCategoryService.delete(1L));
         verify(placeCategoryRepository, times(0)).deleteById(1L);
     }
 }

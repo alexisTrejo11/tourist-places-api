@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -54,7 +55,7 @@ public class ActivityServiceImpl implements ActivityService {
         touristPlaceRepository.findById(insertDTO.getTouristPlaceId())
                 .orElseThrow(() -> new ResourceNotFoundException("Tourist place", "id", insertDTO.getTouristPlaceId()));
 
-        if (insertDTO.getPrice() > 1000000 || insertDTO.getPrice() < 10) {
+        if (insertDTO.getPrice().compareTo(BigDecimal.valueOf(1000000)) > 0 || insertDTO.getPrice().compareTo(BigDecimal.valueOf(10)) < 0) {
             throw new BusinessLogicException("Price must be between 10 and 1,000,000");
         }
     }

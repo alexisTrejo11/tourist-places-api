@@ -1,5 +1,7 @@
 package at.backend.tourist.places.modules.activity.model;
 
+import java.math.BigDecimal;
+
 import at.backend.tourist.places.modules.places.model.TouristPlace;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +25,7 @@ public class Activity {
     private String description;
 
     @Column(name = "price", nullable = false)
-    private Double price;
+    private BigDecimal price;
 
     @Column(name = "duration", nullable = false)
     private String duration;

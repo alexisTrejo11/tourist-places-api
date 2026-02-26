@@ -1,5 +1,7 @@
 package at.backend.tourist.places.modules.activity.dtos;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -21,7 +23,7 @@ public class ActivityDTO {
 
     @Schema(description = "Price of the activity", example = "49.99")
     @JsonProperty("price")
-    private Double price;
+    private BigDecimal price;
 
     @Schema(description = "Duration of the activity in hours", example = "2h")
     @JsonProperty("duration")
