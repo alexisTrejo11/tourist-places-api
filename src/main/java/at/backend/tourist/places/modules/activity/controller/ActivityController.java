@@ -1,19 +1,11 @@
 package at.backend.tourist.places.modules.activity.controller;
 
-import at.backend.tourist.places.core.swagger.ApiResponseExamples;
-import at.backend.tourist.places.core.shared.SwaggerHelper.ApiConstants;
-import at.backend.tourist.places.core.shared.SwaggerHelper.CommonActivityResponses;
+import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
+import at.backend.tourist.places.modules.activity.controller.annotation.*;
 import at.backend.tourist.places.modules.activity.dtos.ActivityDTO;
 import at.backend.tourist.places.modules.activity.dtos.ActivityInsertDTO;
 import at.backend.tourist.places.modules.activity.service.ActivityService;
-import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,82 +17,57 @@ import java.util.List;
 @RequestMapping("v1/api/activities")
 @Tag(name = "Activities", description = "Endpoints for managing activities")
 public class ActivityController {
+  private final ActivityService activityService;
 
-    @Autowired
-    private ActivityService activityService;
+  @Autowired
+  public ActivityController(ActivityService activityService) {
+    this.activityService = activityService;
+  }
 
-    @Operation(summary = "Get all activities", description = "Retrieve a list of all activities available.")
-    @ApiResponse(responseCode = "200", description = ApiConstants.ACTIVITIES_RETRIEVED, content = @Content(schema = @Schema(implementation = ActivityDTO.class)))
-    @ApiResponse(responseCode = "404", description = "No activities found", content = @Content(schema = @Schema(example = ApiResponseExamples.NOT_FOUND)))
-    @GetMapping
-    public ResponseEntity<ResponseWrapper<List<ActivityDTO>>> getAllActivities() {
-        List<ActivityDTO> activities = activityService.getAll();
+  @GetMapping
+  @GetAllActivitiesOperation
+  public ResponseEntity<ResponseWrapper<List<ActivityDTO>>> getAllActivities() {
+    List<ActivityDTO> activities = activityService.getAll();
 
-        return ResponseEntity.ok(ResponseWrapper.found(activities, "Activities"));
-    }
+    return ResponseEntity.ok(ResponseWrapper.found(activities, "Activities"));
+  }
 
-    @Operation(summary = "Get an activity by ID", description = "Retrieve the details of a specific activity using its ID.")
-    @CommonActivityResponses
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = ApiConstants.ACTIVITY_RETRIEVED, content = @Content(schema = @Schema(implementation = ActivityDTO.class))),
-            @ApiResponse(responseCode = "404", description = "activity not found", content = @Content(schema = @Schema(example = ApiResponseExamples.NOT_FOUND))),
-            @ApiResponse(responseCode = "403", description = "Access forbidden, insufficient permissions", content = @Content(schema = @Schema(example = ApiResponseExamples.FORBIDDEN)))
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseWrapper<ActivityDTO>> getActivityById(
-            @Parameter(description = "ID of the activity to retrieve", example = "1") @PathVariable Long id) {
-        ActivityDTO activity = activityService.getById(id);
+  @GetMapping("/{id}")
+  @GetActivityByIdOperation
+  public ResponseEntity<ResponseWrapper<ActivityDTO>> getActivityById(
+      @Parameter(description = "Unique identifier of the activity to retrieve", example = "1", required = true)
+      @PathVariable Long id) {
+    ActivityDTO activity = activityService.getById(id);
 
-        return ResponseEntity.ok(ResponseWrapper.found(activity, "activity"));
-    }
+    return ResponseEntity.ok(ResponseWrapper.found(activity, "activity"));
+  }
 
-    @Operation(summary = "Get activities by tourist place ID", description = "Retrieve a list of activities associated with a specific tourist place.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = ApiConstants.ACTIVITIES_RETRIEVED, content = @Content(schema = @Schema(example = ApiResponseExamples.ACTIVITY))),
-            @ApiResponse(responseCode = "404", description = "Activities not found", content = @Content(schema = @Schema(example = ApiResponseExamples.NOT_FOUND))),
-            @ApiResponse(responseCode = "403", description = "Forbidden access to the activities of this tourist place", content = @Content(schema = @Schema(example = ApiResponseExamples.FORBIDDEN)))
-    })
-    @GetMapping("/tourist_place/{place_id}")
-    public ResponseEntity<ResponseWrapper<List<ActivityDTO>>> getByTouristPlaceId(
-            @Parameter(description = "ID of the tourist place", example = "101") @PathVariable Long place_id) {
-        List<ActivityDTO> activities = activityService.getByTouristPlace(place_id);
+  @GetMapping("/tourist_place/{place_id}")
+  @GetActivitiesByTouristPlaceOperation
+  public ResponseEntity<ResponseWrapper<List<ActivityDTO>>> getByTouristPlaceId(
+      @Parameter(description = "Unique identifier of the tourist place", example = "101", required = true)
+      @PathVariable Long place_id) {
+    List<ActivityDTO> activities = activityService.getByTouristPlace(place_id);
 
-        return ResponseEntity.ok(ResponseWrapper.found(activities, "Activities"));
-    }
+    return ResponseEntity.ok(ResponseWrapper.found(activities, "Activities"));
+  }
 
-    @Operation(
-            summary = "Create a new activity",
-            description = "Add a new activity to the system. **Requires ADMIN role**.",
-            security = @SecurityRequirement(name = "bearerAuth")
-            )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = ApiConstants.ACTIVITY_CREATED, content = @Content(schema = @Schema(example =ApiResponseExamples.ACTIVITY_CREATED))),
-            @ApiResponse(responseCode = "400", description = ApiConstants.INVALID_INPUT_DATA, content = @Content(schema = @Schema(example = ApiResponseExamples.BAD_REQUEST))),
-            @ApiResponse(responseCode = "403", description = "Forbidden to create activity for the user", content = @Content(schema = @Schema(example = ApiResponseExamples.FORBIDDEN)))
-    })
-    @PostMapping
-    public ResponseEntity<ResponseWrapper<ActivityDTO>> createActivity(
-            @Parameter(description = "Details of the activity to create") @RequestBody ActivityInsertDTO insertDTO) {
-        ActivityDTO createdActivity = activityService.create(insertDTO);
+  @PostMapping
+  @CreateActivityOperation
+  public ResponseEntity<ResponseWrapper<ActivityDTO>> createActivity(
+      @Parameter(description = "Details of the activity to create", required = true)
+      @RequestBody ActivityInsertDTO insertDTO) {
+    ActivityDTO createdActivity = activityService.create(insertDTO);
+    return ResponseEntity.status(201).body(ResponseWrapper.created(createdActivity, "activity"));
+  }
 
-        return ResponseEntity.status(201).body(ResponseWrapper.created(createdActivity, "activity"));
-    }
+  @DeleteMapping("/{id}")
+  @DeleteActivityOperation
+  public ResponseEntity<ResponseWrapper<Void>> deleteActivity(
+      @Parameter(description = "Unique identifier of the activity to delete", example = "1", required = true)
+      @PathVariable Long id) {
 
-    @Operation(
-            summary = "Delete an activity by ID",
-            description = "Delete an activity from the system using its ID.  **Requires ADMIN role**.",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = ApiConstants.ACTIVITY_DELETED, content = @Content(schema = @Schema(example = ApiResponseExamples.SUCCESS))),
-            @ApiResponse(responseCode = "404", description = ApiConstants.ACTIVITY_NOT_FOUND, content = @Content(schema = @Schema(example = ApiResponseExamples.NOT_FOUND))),
-            @ApiResponse(responseCode = "403", description = "Forbidden to delete activity for the user", content = @Content(schema = @Schema(example = ApiResponseExamples.FORBIDDEN)))
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseWrapper<Void>> deleteActivity(
-            @Parameter(description = "ID of the activity to delete", example = "1") @PathVariable Long id) {
-
-        activityService.delete(id);
-        return ResponseEntity.status(204).body(ResponseWrapper.deleted("activity"));
-    }
+    activityService.delete(id);
+    return ResponseEntity.status(204).body(ResponseWrapper.deleted("activity"));
+  }
 }
