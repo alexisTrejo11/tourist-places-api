@@ -1,21 +1,14 @@
 package at.backend.tourist.places.modules.review.controller;
 
-import at.backend.tourist.places.core.swagger.ApiResponseExamples;
 import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
+import at.backend.tourist.places.modules.review.controller.annotation.*;
 import at.backend.tourist.places.modules.review.dto.ReviewDTO;
 import at.backend.tourist.places.modules.review.dto.ReviewInsertDTO;
 import at.backend.tourist.places.modules.review.service.ReviewService;
 import at.backend.tourist.places.modules.places.service.TouristPlaceService;
-
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,69 +21,42 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/api/reviews")
 @RequiredArgsConstructor
-@Tag(name = "review Management", description = "Endpoints for managing reviews as Admin")
+@Tag(name = "Reviews", description = "Admin endpoints for managing tourist place reviews and ratings")
 @SecurityRequirement(name = "bearerAuth")
 public class ReviewController {
 
     private final ReviewService reviewService;
     private final TouristPlaceService touristPlaceService;
 
-    @Operation(summary = "Get all reviews", description = "Fetches all reviews in the system. **Requires ADMIN role**.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "List of all reviews retrieved successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class), examples = @ExampleObject(value = ApiResponseExamples.REVIEWS))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content(mediaType = "application/json", schema = @Schema(example = ApiResponseExamples.UNAUTHORIZED_ACCESS)))
-    })
     @GetMapping
+    @GetAllReviewsOperation
     public ResponseWrapper<List<ReviewDTO>> getAllReviews() {
         return ResponseWrapper.found(reviewService.getAll(), "Reviews");
     }
 
-    @Operation(summary = "Get reviews by tourist place ID",description = "Fetches all reviews associated with a specific tourist place. **Requires ADMIN role**.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Reviews retrieved successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class), examples = @ExampleObject(value = ApiResponseExamples.REVIEWS))),
-            @ApiResponse(responseCode = "404", description = "No reviews found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(example = ApiResponseExamples.NOT_FOUND)))
-    })
     @GetMapping("tourist_place/{touristPlaceId}")
-    public ResponseEntity<List<ReviewDTO>> getByTouristPlaceId(
-            @Parameter(description = "ID of the tourist place", example = "101", required = true)
+    @GetReviewsByTouristPlaceOperation
+    public ResponseEntity<ResponseWrapper<List<ReviewDTO>>> getByTouristPlaceId(
+            @Parameter(description = "Unique identifier of the tourist place", example = "1", required = true)
             @PathVariable Long touristPlaceId) {
-
         List<ReviewDTO> reviews = reviewService.getByTouristPlace(touristPlaceId);
-        return ResponseEntity.ok(reviews);
+        return ResponseEntity.ok(ResponseWrapper.found(reviews, "Reviews"));
     }
 
-    @Operation(summary = "Get review by ID", description = "Fetches a specific review by its ID. **Requires ADMIN role**.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "review retrieved successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class), examples = @ExampleObject(value = ApiResponseExamples.REVIEW))),
-            @ApiResponse(responseCode = "404", description = "review not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(example = ApiResponseExamples.NOT_FOUND)))
-    })
     @GetMapping("/{id}")
+    @GetReviewByIdOperation
     public ResponseEntity<ResponseWrapper<ReviewDTO>> getReviewById(
-            @Parameter(description = "ID of the review", example = "1", required = true)
+            @Parameter(description = "Unique identifier of the review", example = "1", required = true)
             @PathVariable Long id) {
 
         ReviewDTO review = reviewService.getById(id);
         return ResponseEntity.ok(ResponseWrapper.found(review, "review"));
     }
 
-    @Operation(summary = "Create a new review", description = "Creates a new review with the provided details. **Requires ADMIN role**.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "review created successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class), examples = @ExampleObject(value = ApiResponseExamples.REVIEW_CREATED))),
-            @ApiResponse(responseCode = "400", description = "Invalid input",
-                    content = @Content(mediaType = "application/json", schema = @Schema(example = ApiResponseExamples.BAD_REQUEST))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(example = ApiResponseExamples.UNAUTHORIZED_ACCESS)))
-    })
     @PostMapping
+    @CreateReviewOperation
     public ResponseEntity<ResponseWrapper<ReviewDTO>> createReview(
+            @Parameter(description = "Details of the review to create", required = true)
             @Valid @RequestBody ReviewInsertDTO insertDTO) {
 
         ReviewDTO createdReview = reviewService.create(insertDTO);
@@ -98,21 +64,10 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.created(createdReview, "review"));
     }
 
-    @Operation(summary = "Delete a review", description = "Deletes a review by its ID. **Requires ADMIN role**.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "review deleted successfully",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(example = ApiResponseExamples.SUCCESS))),
-            @ApiResponse(responseCode = "404", description = "review not found",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(example = ApiResponseExamples.NOT_FOUND))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(example = ApiResponseExamples.UNAUTHORIZED_ACCESS)))
-    })
     @DeleteMapping("/{id}")
+    @DeleteReviewOperation
     public ResponseEntity<ResponseWrapper<Void>> deleteReview(
-            @Parameter(description = "ID of the review to delete", example = "1", required = true)
+            @Parameter(description = "Unique identifier of the review to delete", example = "1", required = true)
             @PathVariable Long id) {
 
         reviewService.delete(id);

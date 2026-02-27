@@ -1,22 +1,18 @@
 package at.backend.tourist.places.modules.user.controller;
 
-import at.backend.tourist.places.core.swagger.ApiResponseExamples;
+import at.backend.tourist.places.core.shared.Response.ResponseWrapper;
+import at.backend.tourist.places.modules.user.controller.annotation.*;
 import at.backend.tourist.places.modules.places.dto.PlaceListDTO;
 import at.backend.tourist.places.modules.places.dto.PlaceListInsertDTO;
-import at.backend.tourist.places.modules.auth.jwt.JwtService;
 import at.backend.tourist.places.modules.places.service.PlaceListService;
-import io.swagger.v3.oas.annotations.Operation;
+import at.backend.tourist.places.modules.auth.jwt.JwtService;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +20,9 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("v1/api/user/place-lists")
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/users/lists")
-@Tag(name = "user Place Lists", description = "APIs for managing user-specific place lists")
+@Tag(name = "User Place Lists", description = "User endpoints for managing personal place lists and favorite destinations")
 @SecurityRequirement(name = "bearerAuth")
 public class UserPlaceListController {
 
@@ -34,19 +30,11 @@ public class UserPlaceListController {
     private final JwtService jwtService;
 
     @PostMapping
-    @Operation(
-            summary = "Create a new place list",
-            description = "Creates a new place list for the authenticated user. **Requires authentication**.",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Place list created successfully", content = @Content(schema = @Schema(implementation = PlaceListDTO.class), examples = @ExampleObject(value = ApiResponseExamples.PLACE_LIST))),
-            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.BAD_REQUEST))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.UNAUTHORIZED_ACCESS)))
-    })
-    public ResponseEntity<PlaceListDTO> newList(@Valid @RequestBody PlaceListInsertDTO insertDTO,
-                                                HttpServletRequest request
-    ) {
+    @CreateUserPlaceListOperation
+    public ResponseEntity<PlaceListDTO> newList(
+            @Parameter(description = "Details of the place list to create", required = true)
+            @Valid @RequestBody PlaceListInsertDTO insertDTO,
+            HttpServletRequest request) {
         Long userId = jwtService.getIdFromRequest(request);
         insertDTO.setUserId(userId);
         PlaceListDTO createdList = placeListService.create(insertDTO);
@@ -54,15 +42,7 @@ public class UserPlaceListController {
     }
 
     @GetMapping("/mine")
-    @Operation(
-            summary = "Get my place lists",
-            description = "Retrieves all place lists for the authenticated user.  **Requires authentication**.",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Place lists retrieved successfully", content = @Content(schema = @Schema(implementation = List.class), examples = @ExampleObject(value = ApiResponseExamples.PLACE_LISTS))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.UNAUTHORIZED_ACCESS)))
-    })
+    @GetUserPlaceListsOperation
     public ResponseEntity<List<PlaceListDTO>> getMyLists(HttpServletRequest request) {
         Long userId = jwtService.getIdFromRequest(request);
         List<PlaceListDTO> placeLists = placeListService.getByUserId(userId);
@@ -70,17 +50,7 @@ public class UserPlaceListController {
     }
 
     @PostMapping("/{placeListId}/add-place")
-    @Operation(
-            summary = "Add places to a list",
-            description = "Adds one or more places to an existing place list.  **Requires authentication**.",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "places added successfully", content = @Content(schema = @Schema(implementation = PlaceListDTO.class), examples = @ExampleObject(value = ApiResponseExamples.PLACE_LISTS))),
-            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.BAD_REQUEST))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.UNAUTHORIZED_ACCESS))),
-            @ApiResponse(responseCode = "404", description = "Place list not found", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.NOT_FOUND)))
-    })
+    @AddPlacesToListOperation
     public ResponseEntity<PlaceListDTO> addPlaces(
             @Parameter(description = "ID of the place list to update", required = true)
             @PathVariable Long placeListId,
@@ -92,17 +62,7 @@ public class UserPlaceListController {
     }
 
     @PostMapping("/{placeListId}/remove-place")
-    @Operation(
-            summary = "Remove places from a list",
-            description = "Removes one or more places from an existing place list. **Requires authentication**.",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "places removed successfully", content = @Content(schema = @Schema(implementation = PlaceListDTO.class), examples = @ExampleObject(value = ApiResponseExamples.SUCCESS))),
-            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.BAD_REQUEST))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.UNAUTHORIZED_ACCESS))),
-            @ApiResponse(responseCode = "404", description = "Place list not found", content = @Content(schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ApiResponseExamples.NOT_FOUND)))
-    })
+    @RemovePlacesFromListOperation
     public ResponseEntity<PlaceListDTO> removePlaces(
             @Parameter(description = "ID of the place list to update", required = true) @PathVariable Long placeListId,
             @Parameter(description = "Set of place IDs to remove", required = true)
@@ -113,16 +73,7 @@ public class UserPlaceListController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(
-            summary = "Delete a place list",
-            description = "Deletes a place list owned by the authenticated user. **Requires authentication**.",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Place list deleted successfully", content = @Content(mediaType = "application/json", schema = @Schema(example = ApiResponseExamples.NO_CONTENT))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized, user not authenticated", content = @Content(mediaType = "application/json", schema = @Schema(example = ApiResponseExamples.UNAUTHORIZED_ACCESS))),
-            @ApiResponse(responseCode = "404", description = "Place list not found", content = @Content(mediaType = "application/json", schema = @Schema(example = ApiResponseExamples.NOT_FOUND)))
-    })
+    @DeleteUserPlaceListOperation
     public ResponseEntity<Void> deleteMyList(
             @Parameter(description = "ID of the place list to delete", required = true)
             @PathVariable Long id,
