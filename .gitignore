@@ -10,3 +10,18 @@
 .env.development
 .env.test
 .env.production
+
+# Build output
+target/
+out/
+
+# Logs
+*.log
+logs/
+
+# IDE / OS generated files
+*.iml
+.classpath
+.project
+.settings/
+Thumbs.db
