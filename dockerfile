@@ -1,22 +1,18 @@
-FROM gradle:8.4-jdk17 AS build
+FROM maven:3.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-COPY build.gradle settings.gradle ./
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-RUN gradle dependencies --no-daemon
+COPY src ./src
+RUN mvn clean package -DskipTests -B
 
-COPY . .
-
-RUN gradle clean build -x test --no-daemon
-
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:17-jre-jammy
 
 WORKDIR /app
 
-COPY --from=build /app/build/libs/*.jar app.jar
-
-COPY src/main/resources/db/migrations /app/migrations
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 

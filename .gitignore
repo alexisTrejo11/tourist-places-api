@@ -10,6 +10,8 @@
 .env.development
 .env.test
 .env.production
+.venv-docs/
+.venv/
 
 # Build output
 target/

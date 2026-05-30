@@ -1,18 +1,20 @@
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: tourist_places_db
-    env_file: .env
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5431:5432"
-    networks:
-      - app-network
+
+  # Cloud first: Using a RDS instance instead of a local Postgres instance
+  # postgres:
+  #  image: postgres:15-alpine
+  #  container_name: tourist_places_db
+  #  env_file: .env
+  #  environment:
+  #    POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${DB_USERNAME}
+  #    POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #  volumes:
+  #    - postgres-data:/var/lib/postgresql/data
+  #  ports:
+  #    - "5431:5432"
+  #  networks:
+  #    - app-network
 
   app:
     build: .
@@ -24,13 +26,13 @@ services:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-    depends_on:
-      - postgres
+    # depends_on:
+      #- postgres
     networks:
       - app-network
 
-volumes:
-  postgres-data:
+# volumes:
+  #postgres-data:
 
 networks:
   app-network:
