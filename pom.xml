@@ -11,7 +11,7 @@
 
 	<groupId>backend</groupId>
 	<artifactId>tourist-places-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>tourist-places-api</name>
 	<description>Tourist Places API - migrated from Gradle</description>
 

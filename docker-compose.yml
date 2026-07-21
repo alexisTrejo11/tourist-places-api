@@ -1,38 +1,101 @@
+# Profiles (COMPOSE_PROFILES in .env, or override on the CLI)
+# --------
+# Standalone (default):  docker compose up
+#   requires COMPOSE_PROFILES=standalone in .env (see .env.example)
+#   → app only; DB/Redis from .env (RDS, Upstash, etc.)
+#
+# Local:                 COMPOSE_PROFILES=local docker compose up --build
+#   → app + Postgres + Redis on app-network
+#   → app env uses docker service hostnames/ports (set below)
+
+x-app-base: &app-base
+  build: .
+  container_name: tourist_places_app
+  ports:
+    - "${SERVER_PORT:-8080}:8080"
+  env_file: .env
+  networks:
+    - app-network
+
 services:
-
-  # Cloud first: Using a RDS instance instead of a local Postgres instance
-  # postgres:
-  #  image: postgres:15-alpine
-  #  container_name: tourist_places_db
-  #  env_file: .env
-  #  environment:
-  #    POSTGRES_DB: ${DB_NAME}
-  #     POSTGRES_USER: ${DB_USERNAME}
-  #    POSTGRES_PASSWORD: ${DB_PASSWORD}
-  #  volumes:
-  #    - postgres-data:/var/lib/postgresql/data
-  #  ports:
-  #    - "5431:5432"
-  #  networks:
-  #    - app-network
-
+  # ---------------------------------------------------------------------------
+  # Standalone — app only, external Postgres/Redis via .env
+  # ---------------------------------------------------------------------------
   app:
-    build: .
-    container_name: tourist_places_app
-    ports:
-      - "8080:8080"
-    env_file: .env
+    <<: *app-base
+    profiles: ["standalone"]
     environment:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-    # depends_on:
-      #- postgres
+      SPRING_REDIS_HOST: ${SPRING_DATA_REDIS_HOST}
+      SPRING_REDIS_PORT: ${SPRING_DATA_REDIS_PORT:-6379}
+      SPRING_DATA_REDIS_HOST: ${SPRING_DATA_REDIS_HOST}
+      SPRING_DATA_REDIS_PORT: ${SPRING_DATA_REDIS_PORT:-6379}
+      SPRING_DATA_REDIS_PASSWORD: ${SPRING_DATA_REDIS_PASSWORD:-}
+      SPRING_DATA_REDIS_SSL: ${SPRING_DATA_REDIS_SSL:-false}
+
+  # ---------------------------------------------------------------------------
+  # Local — same image, env points at docker-network Postgres/Redis
+  # ---------------------------------------------------------------------------
+  app-local:
+    <<: *app-base
+    profiles: ["local"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-tourist_places}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: "6379"
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: "6379"
+      SPRING_DATA_REDIS_PASSWORD: ""
+      SPRING_DATA_REDIS_SSL: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    profiles: ["local"]
+    image: postgres:15-alpine
+    container_name: tourist_places_db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-tourist_places}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
-# volumes:
-  #postgres-data:
+  redis:
+    profiles: ["local"]
+    image: redis:7-alpine
+    container_name: tourist_places_redis
+    ports:
+      - "6378:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-data:
+  redis-data:
 
 networks:
   app-network:

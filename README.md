@@ -34,12 +34,12 @@ Tourist Places API is a Spring Boot REST service for travel and tourism applicat
 
 The project is designed for **cloud deployment on AWS**: the API runs in Docker on **EC2**, persists data in **Amazon RDS PostgreSQL**, and uses **Redis** (ElastiCache or managed Redis) for activation tokens and JWT blacklisting.
 
-| | |
-|---|---|
-| **Version** | 0.0.1-SNAPSHOT |
-| **Status** | stable |
-| **Primary API prefix** | `/v1/api/` |
-| **Auth prefix** | `/auth/` |
+| |                                                                               |
+|---|-------------------------------------------------------------------------------|
+| **Version** | 1.0.0 |                                                                        |
+| **Status** | stable                                                                        |
+| **Primary API prefix** | `/v1/api/`                                                                    |
+| **Auth prefix** | `/auth/`                                                                      |
 | **OpenAPI (Swagger)** | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) |
 
 ---

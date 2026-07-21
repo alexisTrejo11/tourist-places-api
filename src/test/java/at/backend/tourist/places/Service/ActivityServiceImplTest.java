@@ -77,7 +77,7 @@ public class ActivityServiceImplTest {
 
         assertNotNull(result);
         assertEquals("Hiking Tour", result.getName());
-        assertEquals(25.50, result.getPrice());
+        assertEquals(BigDecimal.valueOf(25.50), result.getPrice());
     }
 
     @Test
