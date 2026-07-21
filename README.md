@@ -40,7 +40,7 @@ The project is designed for **cloud deployment on AWS**: the API runs in Docker 
 | **Status** | stable                                                                        |
 | **Primary API prefix** | `/v1/api/`                                                                    |
 | **Auth prefix** | `/auth/`                                                                      |
-| **OpenAPI (Swagger)** | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) |
+| **OpenAPI (Swagger)** | [http://tourist-places-api.alexis-trejo.com/swagger-ui.html](http://tourist-places-api.alexis-trejo.com/swagger-ui.html) |
 
 ---
 
@@ -54,39 +54,26 @@ Short list for the README; full detail lives in generated docs.
 - Flyway migrations on PostgreSQL with JPA validation
 - Docker image for EC2 with external RDS and Redis
 
-See [Project Features](docs/generated/ProjectFeature.md) for the complete feature breakdown.
+See [Project Features](https://tourist-places-api.alexis-trejo.con/ProjectFeature) for the complete feature breakdown.
 
 ---
 
 ## Documentation
 
-This repository keeps **structured source** in `docs/source/` (YAML frontmatter + notes) and **human-readable docs** in `docs/generated/`, produced by `docs/yaml_to_markdown.py`. The TypeScript contract for portfolio tools is `docs/source/schema.ts`.
+This repository is documentanted externally in my personal web site --> https://alexis-trejo.com/
 
 ### Documentation index
 
 | Document | What you will find | Read |
 |----------|-------------------|------|
-| **Overview** | Problem, solution, metrics, links | [ProjectOverview.md](docs/generated/ProjectOverview.md) |
-| **Metadata** | Project id, version, tech stack, URLs | [ProjectMetadata.md](docs/generated/ProjectMetadata.md) |
-| **API schema** | Endpoints, auth, rate limits, examples | [APISchema.md](docs/generated/APISchema.md) |
-| **Architecture** | Layers, patterns, diagram, data flows | [ProjectArchitecture.md](docs/generated/ProjectArchitecture.md) |
-| **Infrastructure** | Docker, EC2, RDS, Redis, cloud services | [ProjectInfrastructure.md](docs/generated/ProjectInfrastructure.md) |
-| **Features** | Feature cards, snippets, status per area | [ProjectFeature.md](docs/generated/ProjectFeature.md) |
-| **Code showcase** | Curated code examples from the codebase | [ProjectCodeShowCase.md](docs/generated/ProjectCodeShowCase.md) |
-| **Generated index** | Auto-generated hub linking all of the above | [docs/generated/README.md](docs/generated/README.md) |
-
-### Source vs generated
-
-| Path | Purpose |
-|------|---------|
-| `docs/source/*.md` | Edit YAML frontmatter here (machine-friendly, matches `schema.ts`) |
-| `docs/generated/*.md` | Read here on GitHub / in the IDE (do not edit by hand) |
-| `docs/yaml_to_markdown.py` | Regenerates `docs/generated/` from `docs/source/` |
-
-```bash
-pip install pyyaml
-python docs/yaml_to_markdown.py --validate
-```
+| **Overview** | Problem, solution, metrics, links | [ProjectOverview](https://alexis-trejo.com/projects/tourist-places-api/overview) |
+| **Metadata** | Project id, version, tech stack, URLs | [ProjectMetadata](https://alexis-trejo.com/projects/tourist-places-api/metadata) |
+| **API schema** | Endpoints, auth, rate limits, examples | [APISchema](https://alexis-trejo.com/projects/tourist-places-api/api-schema) |
+| **Architecture** | Layers, patterns, diagram, data flows | [ProjectArchitecture](https://alexis-trejo.com/projects/tourist-places-api/architecture) |
+| **Infrastructure** | Docker, EC2, RDS, Redis, cloud services | [ProjectInfrastructure](https://alexis-trejo.com/projects/tourist-places-api/infrastructure) |
+| **Features** | Feature cards, snippets, status per area | [ProjectFeature](https://alexis-trejo.com/projects/tourist-places-api/features) |
+| **Code showcase** | Curated code examples from the codebase | [ProjectCodeShowCase](https://alexis-trejo.com/projects/tourist-places-api/code-showcase) |
+| **Generated index** | Auto-generated hub linking all of the above | [https://tourist-places-api.alexis-trejo.con/README](https://tourist-places-api.alexis-trejo.con/README) |
 
 ---
 
@@ -117,7 +104,7 @@ flowchart LR
   API --> Google[Google OAuth2]
 ```
 
-Full diagram, layers, and decisions: [ProjectArchitecture.md](docs/generated/ProjectArchitecture.md).
+Full diagram, layers, and decisions: [ProjectArchitecture](https://alexis-trejo.com/projects/tourist-places-api/architecture).
 
 ---
 
@@ -155,7 +142,7 @@ cp .env.example .env        # point DB_URL and SPRING_DATA_REDIS_HOST to cloud i
 docker compose up --build -d
 ```
 
-API on host port **8080**. See [ProjectInfrastructure.md](docs/generated/ProjectInfrastructure.md).
+API on host port **8080**. See [ProjectInfrastructure](https://alexis-trejo.com/projects/tourist-places-api/infrastructure).
 
 ---
 
@@ -181,14 +168,14 @@ Full list: [.env.example](.env.example).
 
 | Area | Base path | Doc |
 |------|-----------|-----|
-| Auth | `/auth/` | [APISchema.md](docs/generated/APISchema.md#auth) |
-| Countries | `/v1/api/countries` | [APISchema.md](docs/generated/APISchema.md#countries) |
-| Tourist places | `/v1/api/tourist_places` | [APISchema.md](docs/generated/APISchema.md#tourist-places) |
-| Place categories | `/v1/api/place_categories` | [APISchema.md](docs/generated/APISchema.md#place-categories) |
-| Activities | `/v1/api/activities` | [APISchema.md](docs/generated/APISchema.md#activities) |
-| Reviews | `/v1/api/reviews`, `/v1/api/user/reviews` | [APISchema.md](docs/generated/APISchema.md#reviews) |
-| User place lists | `/v1/api/user/place-lists` | [APISchema.md](docs/generated/APISchema.md#user-place-lists) |
-| Admin users | `/v1/api/users/admin` | [APISchema.md](docs/generated/APISchema.md#users-admin) |
+| Auth | `/auth/` | [APISchema](https://tourist-places-api.alexis-trejo.con/APISchema) |
+| Countries | `/v1/api/countries` | [APISchema](https://tourist-places-api.alexis-trejo.con/APISchema) |
+| Tourist places | `/v1/api/tourist_places` | [APISchema](https://tourist-places-api.alexis-trejo.con/APISchema#tourist-places) |
+| Place categories | `/v1/api/place_categories` | [APISchema](https://tourist-places-api.alexis-trejo.con/APISchema) |
+| Activities | `/v1/api/activities` | [APISchema](https://tourist-places-api.alexis-trejo.con/APISchema) |
+| Reviews | `/v1/api/reviews`, `/v1/api/user/reviews` | [APISchema](https://tourist-places-api.alexis-trejo.con/APISchema) |
+| User place lists | `/v1/api/user/place-lists` | [APISchema](https://tourist-places-api.alexis-trejo.con/APISchema) |
+| Admin users | `/v1/api/users/admin` | [APISchema](https://tourist-places-api.alexis-trejo.con/APISchema) |
 
 Authentication: `Authorization: Bearer <accessToken>` (JWT). Interactive reference: **Swagger UI** at `/swagger-ui.html`.
 
@@ -223,7 +210,7 @@ tourist-places-api/
 
 Target architecture: **EC2** runs the Docker container built from `dockerfile` (Maven multi-stage). **Amazon RDS PostgreSQL** holds all relational data (local Postgres is commented out in `docker-compose.yml`). **ElastiCache Redis** (or Upstash) stores JWT blacklist and activation tokens—set `SPRING_DATA_REDIS_HOST` in `.env`. Place an **ALB** with ACM certificate in front of EC2 for HTTPS.
 
-Details: [ProjectInfrastructure.md](docs/generated/ProjectInfrastructure.md).
+Details: [ProjectInfrastructure](https://tourist-places-api.alexis-trejo.con/ProjectInfrastructure).
 
 ---
 
@@ -234,16 +221,6 @@ Details: [ProjectInfrastructure.md](docs/generated/ProjectInfrastructure.md).
 ```
 
 18 test classes cover controllers and services (Auth, Country, Places, Reviews, Activities, Users).
-
----
-
-## Maintaining documentation
-
-1. Edit YAML in `docs/source/<Section>.md` (keep fields aligned with `docs/source/schema.ts`).
-2. Run `python docs/yaml_to_markdown.py --validate`.
-3. Commit both `docs/source/` and `docs/generated/` if you want docs visible on GitHub without running the script.
-
-Optional notes that are not part of the schema (warnings, TODOs) go in the **Markdown body** below the closing `---` in each source file—they appear under **Additional notes** in generated files.
 
 ---
 
@@ -277,5 +254,5 @@ No LICENSE file in repository yet — add one before public distribution.
 | Resource | URL |
 |----------|-----|
 | Repository | [https://github.com/alexisTrejo11/tourist-places-api](https://github.com/alexisTrejo11/tourist-places-api) |
-| Documentation hub | [docs/generated/README.md](docs/generated/README.md) |
-| Swagger (local) | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) |
+| Documentation hub | [https://alexis-trejo.com/projects/tourist-places-api/overview](https://alexis-trejo.com/projects/tourist-places-api/overview) |
+| Swagger (local) | [http://tourist-places-api.alexis-trejo.com/swagger-ui.html](http://tourist-places-api.alexis-trejo.com/swagger-ui.html) |
