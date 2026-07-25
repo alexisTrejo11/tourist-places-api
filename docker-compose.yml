@@ -33,7 +33,7 @@ services:
       SPRING_DATA_REDIS_HOST: ${SPRING_DATA_REDIS_HOST}
       SPRING_DATA_REDIS_PORT: ${SPRING_DATA_REDIS_PORT:-6379}
       SPRING_DATA_REDIS_PASSWORD: ${SPRING_DATA_REDIS_PASSWORD:-}
-      SPRING_DATA_REDIS_SSL: ${SPRING_DATA_REDIS_SSL:-false}
+      SPRING_DATA_REDIS_SSL_ENABLED: ${SPRING_DATA_REDIS_SSL_ENABLED:-false}
 
   # ---------------------------------------------------------------------------
   # Local — same image, env points at docker-network Postgres/Redis
@@ -50,7 +50,7 @@ services:
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: "6379"
       SPRING_DATA_REDIS_PASSWORD: ""
-      SPRING_DATA_REDIS_SSL: "false"
+      SPRING_DATA_REDIS_SSL_ENABLED: "false"
     depends_on:
       postgres:
         condition: service_healthy

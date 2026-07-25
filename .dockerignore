@@ -1,0 +1,35 @@
+# Version control & CI
+.git
+.github
+
+# Local secrets (injected at runtime via docker-compose / orchestrator)
+.env
+.env.*
+
+# IDE & OS
+.idea
+.vscode
+*.iml
+.DS_Store
+Thumbs.db
+
+# Local build output (image builds fresh with Maven inside the container)
+target
+out
+bin
+*.class
+*.log
+logs
+
+# Tests (Docker build runs mvn package -DskipTests)
+src/test
+
+# Maven wrapper (Dockerfile uses maven:3.9-eclipse-temurin-17 image)
+.mvn
+mvnw
+mvnw.cmd
+
+# Docker / docs (not needed inside the build context)
+docker-compose.yml
+README.md
+*.md

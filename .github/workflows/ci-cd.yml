@@ -37,11 +37,19 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      image: ${{ steps.meta.outputs.image }}
+      tag: ${{ steps.meta.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Lowercase image name
-        run: echo "IMAGE=$(echo '${{ env.IMAGE_NAME }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+        id: meta
+        run: |
+          IMAGE=$(echo '${{ env.IMAGE_NAME }}' | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "tag=${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -66,11 +74,14 @@ jobs:
           cache-to: type=gha,mode=max
 
   # ---------------------------------------------------------------------------
-  # Deploy — SSH via Cloudflare Access, then pull/restart this project's service.
+  # Deploy — SSH via Cloudflare Access, pull image, refresh service
   # ---------------------------------------------------------------------------
   deploy:
     needs: publish
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    concurrency:
+      group: deploy-main
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - name: Install cloudflared
@@ -90,14 +101,11 @@ jobs:
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
-          # Same private key you use locally (e.g. fedora-host).
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-          # Alias "deploy-host" = Cloudflare Access SSH hostname.
           # Service Token auth must NOT go in ProxyCommand as --id/--secret:
-          # cloudflared treats those positionals as a listen address ("missing port").
-          # Pass CF_ACCESS_CLIENT_ID / CF_ACCESS_CLIENT_SECRET via env on the ssh step.
+          # cloudflared treats those as a listen address. Pass via CF_ACCESS_* env.
           {
             echo "Host deploy-host"
             echo "  HostName ${SSH_HOST}"
@@ -112,26 +120,37 @@ jobs:
       - name: Deploy via SSH (GHCR pull + restart)
         env:
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-          GHCR_USER: ${{ github.actor }}
-          IMAGE: ghcr.io/${{ github.repository }}
-          # cloudflared picks these up for non-interactive Access (Service Token).
+          GHCR_USER: ${{ secrets.GHCR_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          IMAGE: ${{ needs.publish.outputs.image }}
+          IMAGE_TAG: ${{ needs.publish.outputs.tag }}
           CF_ACCESS_CLIENT_ID: ${{ secrets.CF_CLIENT_ID }}
           CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_CLIENT_SECRET }}
         run: |
           set -euo pipefail
 
-          IMAGE="$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')"
+          if [ -z "${DEPLOY_PATH:-}" ]; then
+            echo "DEPLOY_PATH secret is required (remote directory with the Makefile)."
+            exit 1
+          fi
+
+          GHCR_USER="${GHCR_USER:-${{ github.repository_owner }}}"
 
           # printf %q keeps tokens with special chars safe inside the remote shell.
           ssh deploy-host \
-            "export GHCR_TOKEN=$(printf '%q' "$GHCR_TOKEN") GHCR_USER=$(printf '%q' "$GHCR_USER") IMAGE=$(printf '%q' "$IMAGE"); bash -s" <<'REMOTE'
+            "export GHCR_TOKEN=$(printf '%q' "$GHCR_TOKEN") \
+                    GHCR_USER=$(printf '%q' "$GHCR_USER") \
+                    IMAGE=$(printf '%q' "$IMAGE") \
+                    IMAGE_TAG=$(printf '%q' "$IMAGE_TAG") \
+                    DEPLOY_PATH=$(printf '%q' "$DEPLOY_PATH"); bash -s" <<'REMOTE'
           set -euo pipefail
 
-          cd ~/homeslab/deploys/servers/tourist-places-api
+          cd "$DEPLOY_PATH"
 
           echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
 
-          MAKE refresh_and_up
+          # Expects a Makefile target that pulls IMAGE:IMAGE_TAG (or :latest) and restarts.
+          make refresh IMAGE="$IMAGE" IMAGE_TAG="$IMAGE_TAG"
 
           # Safe cleanup: only unused images for THIS project (not host-wide prune).
           echo "Cleaning unused images for $IMAGE only..."
